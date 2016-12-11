@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    {% include 'questions/base.html' %}
+
+<body>
+
+
+<div class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-ex-collapse"><span
+                    class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span
+                    class="icon-bar"></span></button>
+            <a class="navbar-brand" href="#"><span>Stack Overflow</span></a></div>
+        <div class="collapse navbar-collapse" id="navbar-ex-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li class="active"><a href="http://localhost:8000/questions">Home</a></li>
+                <li><a href="http://localhost:8000/admin">Admin</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <ul class="list-group">
+                    {% if questions %}
+                        {% for question in questions %}
+                            <li class="list-group-item">{{ question.question_text }}</li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="col-md-4">
+                    <a class="btn btn-primary" href="/questions/question_form">Ask Question</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
