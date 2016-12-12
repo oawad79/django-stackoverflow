@@ -1,6 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
     {% include 'questions/base.html' %}
+
+    <script src="/static/responsive-wysiwyg/editor.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#txtEditor").Editor();
+        });
+    </script>
+    <link href="/static/responsive-wysiwyg/editor.css" type="text/css" rel="stylesheet"/>
 
     <body>
         <div class="section">
@@ -13,7 +20,7 @@
                                 <input class="form-control" id="exampleInputEmail1" placeholder="What is your question? Be specific" type="email">
                             </div>
                             <div class="form-group">
-
+                                <textarea id="txtEditor"></textarea>
                             </div>
                             <button type="submit" class="btn btn-default" contenteditable="true">Post Your Question</button>
                         </form>
