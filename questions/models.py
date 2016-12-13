@@ -3,10 +3,11 @@ from django.db import models
 # Create your models here.
 
 class Question(models.Model):
+    question_title = models.CharField(max_length=200, default='')
     question_text = models.CharField(max_length=1000)
 
     def __str__(self):
-        return self.question_text
+        return self.question_title
 
 class QuestionAnswer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)

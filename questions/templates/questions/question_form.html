@@ -14,7 +14,8 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
-                        <form role="form">
+                        <form role="form" action="{% url 'questions:new_question' %}" method="post">
+                            {% csrf_token %}
                             <div class="form-group">
                                 <label class="control-label" for="exampleInputEmail1">Title</label>
                                 <input class="form-control" id="exampleInputEmail1" placeholder="What is your question? Be specific" type="email">
