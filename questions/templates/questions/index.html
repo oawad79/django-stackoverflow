@@ -11,17 +11,19 @@
                 <ul class="list-group">
                     {% if questions %}
                         {% for question in questions %}
-                            <li class="list-group-item">{{ question.question_text }}</li>
+                            <li class="list-group-item">{{ question.question_title }}</li>
                         {% endfor %}
                     {% endif %}
                 </ul>
             </div>
             <div class="col-md-4">
-                    <a class="btn btn-primary" href="/questions/question_form">Ask Question</a>
+                <a class="btn btn-primary" href="{% url 'questions:question_form' %}">Ask Question</a>
             </div>
         </div>
     </div>
 </div>
+
+{% include 'questions/footer.html' %}
 
 </body>
 </html>
