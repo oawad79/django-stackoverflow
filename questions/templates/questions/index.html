@@ -1,29 +1,80 @@
 <!DOCTYPE html>
-<html>
-    {% include 'questions/base.html' %}
+<html lang="en">
+  {% include 'questions/base.html' %}
 
-<body>
-
-<div class="section">
+  <body>
     <div class="container">
-        <div class="row">
-            <div class="col-md-8">
-                <ul class="list-group">
-                    {% if questions %}
-                        {% for question in questions %}
-                            <li class="list-group-item">{{ question.question_title }}</li>
-                        {% endfor %}
-                    {% endif %}
-                </ul>
-            </div>
-            <div class="col-md-4">
-                <a class="btn btn-primary" href="{% url 'questions:question_form' %}">Ask Question</a>
-            </div>
+      <div class="row">
+        <div class="col-sm-8 blog-main">
+          <div class="blog-post">
+            <h2 class="blog-post-title" style="font-family: Chelsea Market">Most recent questions</h2>
+            <p class="blog-post-meta">January 1, 2014 by <a href="#">Mark</a></p>
+              <div class="container">
+                  <div class="row">
+                      <div class="col-md-12">
+                            {% if questions %}
+                                <div style="align-content: stretch; max-width: 70%">
+                                <hr/>
+                                {% for question in questions %}
+                                    {{ question.question_title }} <span class="tag tag-primary">3 Answers</span>
+                                    <span class="tag tag-primary">2 Votes</span>
+                                  <hr/>
+                                {% endfor %}
+                                </div>
+                            {% endif %}
+
+                      </div>
+
+                  </div>
+              </div>
+          </div>
+
+          <nav class="blog-pagination">
+            <a class="btn btn-outline-primary" href="#">Older</a>
+            <a class="btn btn-outline-secondary disabled" href="#">Newer</a>
+          </nav>
+
         </div>
+
+        <div class="col-sm-3 offset-sm-1 blog-sidebar">
+          <div class="sidebar-module sidebar-module-inset">
+            <h5>Blog</h5>
+            <ol class="list-unstyled">
+              <li><a href="#">Spring Boot Discovery</a></li>
+              <li><a href="#">JDBC Template</a></li>
+
+            </ol>
+          </div>
+          <div class="sidebar-module">
+            <h4>Archives</h4>
+            <ol class="list-unstyled">
+              <li><a href="#">March 2014</a></li>
+              <li><a href="#">February 2014</a></li>
+              <li><a href="#">January 2014</a></li>
+              <li><a href="#">December 2013</a></li>
+              <li><a href="#">November 2013</a></li>
+              <li><a href="#">October 2013</a></li>
+              <li><a href="#">September 2013</a></li>
+              <li><a href="#">August 2013</a></li>
+              <li><a href="#">July 2013</a></li>
+              <li><a href="#">June 2013</a></li>
+              <li><a href="#">May 2013</a></li>
+              <li><a href="#">April 2013</a></li>
+            </ol>
+          </div>
+          <div class="sidebar-module">
+            <h4>Elsewhere</h4>
+            <ol class="list-unstyled">
+              <li><a href="{% url 'questions:question_form' %}">Ask Question</a></li>
+              <li><a href="#">Twitter</a></li>
+              <li><a href="#">Facebook</a></li>
+            </ol>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
 
-{% include 'questions/footer.html' %}
+    {% include 'questions/footer.html' %}
 
-</body>
+  </body>
 </html>
