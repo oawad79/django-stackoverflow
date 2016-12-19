@@ -21,6 +21,12 @@
                                 <input class="form-control" id="questionTitle" name="questionTitle" placeholder="What is your question? Be specific" type="text">
                             </div>
                             <div class="form-group">
+                                <label for="category">Category</label>
+                                <select id="category" class="form-control" name="category">
+                                   {% for category in categories %}
+                                   <option value="{{ category.category_name }}">{{ category.category_desc }}</option>
+                                   {% endfor %}
+                                </select>
                                 <textarea id="questionText" name="questionText"></textarea>
                             </div>
                             <button type="submit" class="btn btn-default" contenteditable="true" onclick="$('#questionText').val($('.Editor-editor').text());">Post Your Question</button>

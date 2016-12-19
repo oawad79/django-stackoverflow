@@ -1,0 +1,35 @@
+<html>
+    {% include 'questions/base.html' %}
+
+    <script src="/static/responsive-wysiwyg/editor.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#questionText").Editor();
+        });
+    </script>
+    <link href="/static/responsive-wysiwyg/editor.css" type="text/css" rel="stylesheet"/>
+
+    <body>
+        <div class="section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>{{ question.question_title }}</h3>
+                        <hr/>
+
+                        <pre>
+                            {{ question.question_text }}
+                        </pre>
+
+                        <textarea name="questionText" id="questionText">
+
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+</body>
+</html>
+

@@ -16,7 +16,8 @@
                                 <div style="align-content: stretch; max-width: 70%">
                                 <hr/>
                                 {% for question in questions %}
-                                    {{ question.question_title }} <span class="tag tag-primary">3 Answers</span>
+                                    <a href="{% url 'questions:question_answers' question.id %}">{{ question.question_title }}</a> <br/>
+                                    <span class="tag tag-primary">3 Answers</span>
                                     <span class="tag tag-primary">2 Votes</span>
                                   <hr/>
                                 {% endfor %}
