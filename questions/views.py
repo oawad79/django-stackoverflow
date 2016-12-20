@@ -29,9 +29,11 @@ def question_form(request):
 
 
 def new_question(request):
-    c = Category.objects.filter(category_name=request.POST.getlist('category')[0]).get()
+    c = Category.objects.filter(pk=request.POST.getlist('category')[0]).get()
 
-    q = Question(category=c,question_title=request.POST['questionTitle'], question_text=request.POST['questionText'])
+    q = Question(category=c,
+                 question_title=request.POST['questionTitle'],
+                 question_text=request.POST['questionText'])
 
     q.save()
 
