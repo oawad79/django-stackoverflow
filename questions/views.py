@@ -10,6 +10,7 @@ from questions.models import Question, Category
 
 logger = logging.getLogger('django')
 
+
 def index(request):
     questions = Question.objects.all()
     template = loader.get_template('questions/index.html')
@@ -22,30 +23,16 @@ def index(request):
 def question_form(request):
     categories = Category.objects.all()
     context = {
-        'categories' : categories
+        'categories': categories
     }
     return render(request, 'questions/question_form.html', context)
 
 
 def new_question(request):
+    c = Category.objects.filter(category_name=request.POST.getlist('category')[0]).get()
 
-    q = Question()
-    q.question_title = request.POST['questionTitle']
-    q.question_text = request.POST['questionText']
+    q = Question(category=c,question_title=request.POST['questionTitle'], question_text=request.POST['questionText'])
 
-    logger.debug('**********************')
-    logger.debug('question = ' + request.POST.getlist('category')[0])
-    logger.debug('**********************')
-
-
-
-    Category.objects.get(category_name=request.POST.getlist('category')[0])
-
-    #q.category.category_name = request.POST.getlist('category')[0]
-    #category.save()
-
-
-    #q.category.save();
     q.save()
 
     return HttpResponseRedirect(reverse('questions:index'))
@@ -56,7 +43,7 @@ def question_answers(request, question_id):
 
     question = Question.objects.get(pk=question_id)
     context = {
-        'question' : question
+        'question': question
     }
 
     return render(request, 'questions/question_answers.html', context)
