@@ -24,6 +24,7 @@ logger = logging.getLogger('django')
 #     return HttpResponse(template.render(context, request))
 
 def index(request):
+    # test
     question_list = Question.objects.all()
     page = request.GET.get('page', 1)
 
