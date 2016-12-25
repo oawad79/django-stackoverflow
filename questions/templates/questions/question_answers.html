@@ -1,13 +1,22 @@
 <html>
     {% include 'questions/base.html' %}
 
-    <script src="/static/responsive-wysiwyg/editor.js"></script>
-    <script>
-        $(document).ready(function() {
-            $("#questionText").Editor();
+    <script src="/static/bower_components/tinymce/tinymce.min.js"></script>
+    <script type="text/javascript">
+        tinymce.init({
+            selector: '#questionText',
+            theme: 'modern',
+            width: 1050,
+            height: 300,
+            plugins: [
+                'advlist autolink link image lists charmap print preview hr anchor pagebreak spellchecker',
+                'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
+                'save table contextmenu directionality emoticons template paste textcolor'
+            ],
+            content_css: 'css/content.css',
+            toolbar: 'insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons'
         });
     </script>
-    <link href="/static/responsive-wysiwyg/editor.css" type="text/css" rel="stylesheet"/>
 
     <body>
         <div class="section">
@@ -16,10 +25,10 @@
                     <div class="col-md-12">
                         <h3>{{ question.question_title }}</h3>
                         <hr/>
-<hr>
-                        <pre>
-                            {{ question.question_text }}
-                        </pre>
+
+                        <div>
+                            {% autoescape off %}{{ question.question_text }} {% endautoescape %}
+                        </div>
 
                         <textarea name="questionText" id="questionText">
 

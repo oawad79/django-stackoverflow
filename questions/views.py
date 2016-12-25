@@ -1,23 +1,41 @@
 import logging
 
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.template import loader
 from django.urls import reverse
+from django.views.generic import ListView
 
 from questions.models import Question, Category
 
 logger = logging.getLogger('django')
 
 
+# def index(request):
+#     questions = Question.objects.all()
+#     #paginator = Paginator(questions, 10)
+#
+#     template = loader.get_template('questions/index.html')
+#     context = {
+#         'questions': questions
+#     }
+#     return HttpResponse(template.render(context, request))
+
 def index(request):
-    questions = Question.objects.all()
-    template = loader.get_template('questions/index.html')
-    context = {
-        'questions': questions
-    }
-    return HttpResponse(template.render(context, request))
+    question_list = Question.objects.all()
+    page = request.GET.get('page', 1)
+
+    paginator = Paginator(question_list, 10)
+    try:
+        questions = paginator.page(page)
+    except PageNotAnInteger:
+        questions = paginator.page(1)
+    except EmptyPage:
+        questions = paginator.page(paginator.num_pages)
+
+    return render(request, 'questions/index.html', { 'questions': questions })
 
 
 def question_form(request):
