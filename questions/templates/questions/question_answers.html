@@ -1,10 +1,11 @@
 <html>
     {% include 'questions/base.html' %}
 
+
     <script src="/static/bower_components/tinymce/tinymce.min.js"></script>
     <script type="text/javascript">
         tinymce.init({
-            selector: '#questionText',
+            selector: '#questionAnswer',
             theme: 'modern',
             width: 1050,
             height: 300,
@@ -13,8 +14,9 @@
                 'searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking',
                 'save table contextmenu directionality emoticons template paste textcolor'
             ],
-            content_css: 'css/content.css',
-            toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons'
+
+            toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons',
+            relative_urls: false,
         });
     </script>
 
@@ -30,9 +32,17 @@
                             {% autoescape off %}{{ question.question_text }} {% endautoescape %}
                         </div>
 
-                        <textarea name="questionText" id="questionText">
+                        <br/>
+                        Your Answer
+                        <br/>
 
-                        </textarea>
+
+                        <br/>
+                        <form role="form" action="{% url 'questions:add_question_answer' question.id %}" method="post">
+                            {% csrf_token %}
+                            <textarea name="questionAnswer" id="questionAnswer"></textarea>
+                            <button type="submit" class="btn btn-default" contenteditable="true">Post Your Answer</button>
+                        </form>
                     </div>
                 </div>
             </div>

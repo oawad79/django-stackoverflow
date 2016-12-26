@@ -8,7 +8,9 @@ from django.template import loader
 from django.urls import reverse
 from django.views.generic import ListView
 
-from questions.models import Question, Category
+from questions.models import Question, Category, QuestionAnswer
+from tinymce.widgets import TinyMCE
+
 
 logger = logging.getLogger('django')
 
@@ -68,3 +70,15 @@ def question_answers(request, question_id):
     }
 
     return render(request, 'questions/question_answers.html', context)
+
+
+def add_question_answer(request, question_id):
+    logger.debug('an answer received for question = ' + question_id)
+
+    question = Question.objects.get(pk=question_id)
+    answer = QuestionAnswer(question=question, answer_text=request.POST['questionAnswer'])
+    answer.save()
+
+    url = reverse('questions:question_answers', kwargs={'question_id': question_id})
+    return HttpResponseRedirect(url)
+
