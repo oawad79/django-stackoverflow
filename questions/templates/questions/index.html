@@ -17,8 +17,9 @@
                                 <hr/>
                                 {% for question in questions %}
                                     <a href="{% url 'questions:question_answers' question.id %}">{{ question.question_title }}</a> <br/>
-                                    <span class="tag tag-primary">3 Answers</span>
+                                    <span class="tag tag-primary">{{ question.questionanswer_set.count }} Answers</span>
                                     <span class="tag tag-primary">2 Votes</span>
+                                    <span class="tag tag-info">{{ question.category.category_desc }}</span>
                                   <hr/>
                                 {% endfor %}
                                 </div>

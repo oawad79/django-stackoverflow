@@ -3,6 +3,9 @@
 
 
     <script src="/static/bower_components/tinymce/tinymce.min.js"></script>
+    <script src="/static/upvote/jquery.upvote.js" type="text/javascript"></script>
+    <link href="/static/upvote/jquery.upvote.css" rel="stylesheet">
+
     <script type="text/javascript">
         tinymce.init({
             selector: '#questionAnswer',
@@ -20,17 +23,38 @@
         });
     </script>
 
+
+
     <body>
         <div class="section">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12">
+
+                        <div id="topic" class="upvote">
+                            <a class="upvote upvote-on"></a>
+                            <span class="count">0</span>
+                            <a class="downvote"></a>
+                            <a class="star"></a>
+                        </div>
+
                         <h3>{{ question.question_title }}</h3>
                         <hr/>
 
                         <div>
                             {% autoescape off %}{{ question.question_text }} {% endautoescape %}
                         </div>
+
+                        <br/>
+                        {{ answers.count }} Answers
+                        <hr/>
+                        <br/>
+
+                        {% for answer in answers %}
+                            {% autoescape off %} {{ answer.answer_text }} {% endautoescape %}
+                            <br/>
+                            <hr/>
+                        {% endfor %}
 
                         <br/>
                         Your Answer
@@ -41,14 +65,26 @@
                         <form role="form" action="{% url 'questions:add_question_answer' question.id %}" method="post">
                             {% csrf_token %}
                             <textarea name="questionAnswer" id="questionAnswer"></textarea>
+                            <br/>
                             <button type="submit" class="btn btn-default" contenteditable="true">Post Your Answer</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+        <script type="text/javascript">
+            var callback = function(data) {
+                $.ajax({
+                    url: '{% url 'questions:vote_question' %}',
+                    type: 'post',
+                    data: { id: data.id, up: data.upvoted, down: data.downvoted, star: data.starred, csrfmiddlewaretoken: '{{ csrf_token }}' }
+                });
+            };
 
+            $('#topic').upvote({id: 123, callback: callback});
+        </script>
 
+    {% include 'questions/footer.html' %}
 </body>
 </html>
 

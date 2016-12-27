@@ -38,6 +38,7 @@ def index(request):
     except EmptyPage:
         questions = paginator.page(paginator.num_pages)
 
+
     return render(request, 'questions/index.html', { 'questions': questions })
 
 
@@ -65,8 +66,11 @@ def question_answers(request, question_id):
     logger.debug('question id = ' + question_id)
 
     question = Question.objects.get(pk=question_id)
+    answers = QuestionAnswer.objects.filter(question=question)
+
     context = {
-        'question': question
+        'question': question,
+        'answers': answers
     }
 
     return render(request, 'questions/question_answers.html', context)
@@ -81,4 +85,16 @@ def add_question_answer(request, question_id):
 
     url = reverse('questions:question_answers', kwargs={'question_id': question_id})
     return HttpResponseRedirect(url)
+
+
+def vote_question(request):
+    question = Question.objects.get(pk=question_id)
+    answers = QuestionAnswer.objects.filter(question=question)
+
+    context = {
+        'question': question,
+        'answers': answers
+    }
+
+    return render(request, 'questions/question_answers.html', context)
 
