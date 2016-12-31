@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.views.generic import ListView
 
 from questions.models import Question, Category, QuestionAnswer
-from tinymce.widgets import TinyMCE
+
 
 
 logger = logging.getLogger('django')
