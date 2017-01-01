@@ -21,6 +21,14 @@
             toolbar: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons',
             relative_urls: false,
         });
+
+        var answerCallback = function(data) {
+                $.ajax({
+                    url: '{% url 'questions:vote_answer' question.id %}',
+                    type: 'post',
+                    data: { id: data.id, up: data.upvoted, down: data.downvoted, star: data.starred, csrfmiddlewaretoken: '{{ csrf_token }}' }
+                });
+            };
     </script>
 
 
@@ -29,39 +37,53 @@
         <div class="section">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-12">
-
+                    <div class="col-md-1">
                         <div id="topic" class="upvote">
                             <a class="upvote upvote-on"></a>
-                            <span class="count">0</span>
+                            <span class="count">{{ question.votes }}</span>
                             <a class="downvote"></a>
                             <a class="star"></a>
                         </div>
-
+                    </div>
+                    <div class="col-md-11">
                         <h3>{{ question.question_title }}</h3>
                         <hr/>
 
                         <div>
                             {% autoescape off %}{{ question.question_text }} {% endautoescape %}
                         </div>
-
-                        <br/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
                         {{ answers.count }} Answers
                         <hr/>
-                        <br/>
+                    </div>
+                </div>
 
-                        {% for answer in answers %}
-                            {% autoescape off %} {{ answer.answer_text }} {% endautoescape %}
-                            <br/>
-                            <hr/>
-                        {% endfor %}
+                {% for answer in answers %}
+                <div class="row">
+                    <div class="col-md-1">
+                        <div id="topic{{ answer.id }}" class="upvote">
+                            <a class="upvote upvote-on"></a>
+                            <span class="count">{{ answer.votes }}</span>
+                            <a class="downvote"></a>
+                            <a class="star"></a>
+                        </div>
+                        <script type="text/javascript">
+                            $('#topic{{ answer.id }}').upvote({id: {{ answer.id }}, callback: answerCallback});
+                        </script>
+                    </div>
+                    <div class="col-md-11">
+                        {% autoescape off %} {{ answer.answer_text }} {% endautoescape %}
+                    </div>
+                </div>
+                <hr/>
+                {% endfor %}
 
-                        <br/>
+                <div class="row">
+                    <div class="col-md-12">
                         Your Answer
-                        <br/>
-
-
-                        <br/>
                         <form role="form" action="{% url 'questions:add_question_answer' question.id %}" method="post">
                             {% csrf_token %}
                             <textarea name="questionAnswer" id="questionAnswer"></textarea>
@@ -75,13 +97,14 @@
         <script type="text/javascript">
             var callback = function(data) {
                 $.ajax({
-                    url: '{% url 'questions:vote_question' %}',
+                    url: '{% url 'questions:vote_question' question.id %}',
                     type: 'post',
                     data: { id: data.id, up: data.upvoted, down: data.downvoted, star: data.starred, csrfmiddlewaretoken: '{{ csrf_token }}' }
                 });
             };
 
             $('#topic').upvote({id: 123, callback: callback});
+
         </script>
 
     {% include 'questions/footer.html' %}

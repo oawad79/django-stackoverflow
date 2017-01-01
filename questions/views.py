@@ -87,8 +87,65 @@ def add_question_answer(request, question_id):
     return HttpResponseRedirect(url)
 
 
-def vote_question(request):
+def vote_question(request, question_id):
+
+
+    is_up = request.POST['up'] == 'true'
+    is_down = request.POST['down'] == 'true'
+    is_starred = request.POST['star'] == 'true'
+
+    logger.debug('******* up = ' + str(is_up))
+    logger.debug('******* down = ' + str(is_down))
+    logger.debug('******* star = ' + str(is_starred))
+
     question = Question.objects.get(pk=question_id)
+
+    if is_up:
+        logger.debug('+1')
+        question.votes += 1
+    elif is_down:
+        logger.debug('-1')
+        question.votes -= 1
+    elif is_starred:
+        question.favorites += 1
+    elif not is_starred:
+        question.favorites -= 1
+
+    question.save()
+
+    answers = QuestionAnswer.objects.filter(question=question)
+
+    context = {
+        'question': question,
+        'answers': answers
+    }
+
+    return render(request, 'questions/question_answers.html', context)
+
+def vote_answer(request, question_id):
+    is_up = request.POST['up'] == 'true'
+    is_down = request.POST['down'] == 'true'
+    is_starred = request.POST['star'] == 'true'
+
+    logger.debug('******* up = ' + str(is_up))
+    logger.debug('******* down = ' + str(is_down))
+    logger.debug('******* star = ' + str(is_starred))
+
+    question = Question.objects.get(pk=question_id)
+
+    if is_up:
+        logger.debug('+1')
+        question.votes += 1
+    elif is_down:
+        logger.debug('-1')
+        question.votes -= 1
+    elif is_starred:
+        question.favorites += 1
+    elif not is_starred:
+        question.favorites -= 1
+
+    question.save()
+
     answers = QuestionAnswer.objects.filter(question=question)
 
     context = {

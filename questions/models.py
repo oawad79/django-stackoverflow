@@ -14,6 +14,8 @@ class Question(models.Model):
     question_title = models.CharField(max_length=200, default='')
     question_text = models.CharField(max_length=1000)
     views = models.IntegerField(default=0)
+    votes = models.IntegerField(default=0)
+    favorites = models.IntegerField(default=0)
     category = models.ForeignKey(Category, default=1)
 
 

@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^new_question/$', views.new_question, name='new_question'),
     url(r'^question_answers/(?P<question_id>[0-9]+)/$', views.question_answers, name='question_answers'),
     url(r'^add_question_answer/(?P<question_id>[0-9]+)/$', views.add_question_answer, name='add_question_answer'),
-    url(r'^vote_question/$', views.vote_question, name='vote_question')
+    url(r'^vote_question/(?P<question_id>[0-9]+)/$', views.vote_question, name='vote_question'),
+    url(r'^vote_answer/(?P<question_id>[0-9]+)/$', views.vote_answer, name='vote_answer')
 
 ]
