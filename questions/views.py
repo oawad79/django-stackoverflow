@@ -1,13 +1,17 @@
 import logging
 
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib.auth.views import password_reset_confirm, password_reset
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.template import loader
 from django.urls import reverse
 from django.views.generic import ListView
 
+from questions.forms import ChangePasswordForm
 from questions.models import Question, Category, QuestionAnswer
 
 
@@ -42,6 +46,7 @@ def index(request):
     return render(request, 'questions/index.html', { 'questions': questions })
 
 
+@login_required(login_url="questions/login/")
 def question_form(request):
     categories = Category.objects.all()
     context = {
@@ -127,24 +132,21 @@ def vote_answer(request, question_id):
     is_down = request.POST['down'] == 'true'
     is_starred = request.POST['star'] == 'true'
 
-    logger.debug('******* up = ' + str(is_up))
-    logger.debug('******* down = ' + str(is_down))
-    logger.debug('******* star = ' + str(is_starred))
-
     question = Question.objects.get(pk=question_id)
+    answer = question.questionanswer_set.filter(pk=request.POST['id']).get()
 
     if is_up:
         logger.debug('+1')
-        question.votes += 1
+        answer.votes += 1
     elif is_down:
         logger.debug('-1')
-        question.votes -= 1
+        answer.votes -= 1
     elif is_starred:
-        question.favorites += 1
+        answer.favorites += 1
     elif not is_starred:
-        question.favorites -= 1
+        answer.favorites -= 1
 
-    question.save()
+    answer.save()
 
     answers = QuestionAnswer.objects.filter(question=question)
 
@@ -155,3 +157,19 @@ def vote_answer(request, question_id):
 
     return render(request, 'questions/question_answers.html', context)
 
+@login_required
+def change_password(request):
+    newpassword = request.POST.get("newpassword")
+    renewpasssword = request.POST.get("renewpasssword")
+    username=request.user.username
+    if newpassword == renewpasssword:
+        if request.method == 'GET':
+            form = ChangePasswordForm()
+        else:
+            u = User.objects.get(username__exact=username)
+            u.set_password(newpassword)
+            u.save()
+            return redirect('/users/account')
+    else:
+        return redirect('/change/password/')
+    return render(request,'changepassword.html', {'form': form,})
