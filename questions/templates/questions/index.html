@@ -114,6 +114,7 @@
             <ol class="list-unstyled">
               {% if user.is_authenticated %}
               <li><a href="{% url 'questions:question_form' %}">Ask Question</a></li>
+              <li><a href="{% url 'questions:changepassword' %}">Change Password</a></li>
               {% endif %}
               <li><a href="#">Twitter</a></li>
               <li><a href="#">Facebook</a></li>
