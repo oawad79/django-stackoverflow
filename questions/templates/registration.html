@@ -1,0 +1,6 @@
+<form action="{% url 'questions:add_user' %}" method="POST" >{% csrf_token %}
+    <table>
+    <tr><td>{{form}}</td></tr>
+    <tr><td></td><td><input type="submit" value="SIGN UP NOW" /></td></tr>
+    </table>
+</form>

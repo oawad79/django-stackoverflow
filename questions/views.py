@@ -11,10 +11,8 @@ from django.template import loader
 from django.urls import reverse
 from django.views.generic import ListView
 
-from questions.forms import ChangePasswordForm
-from questions.models import Question, Category, QuestionAnswer
-
-
+from questions.forms import ChangePasswordForm, UserRegistrationForm
+from questions.models import Question, Category, QuestionAnswer, UserProfile
 
 logger = logging.getLogger('django')
 
@@ -173,3 +171,26 @@ def change_password(request):
     else:
         return redirect('/change/password/')
     return render(request,'changepassword.html', {'form': form,})
+
+def add_user(request):
+    username = request.POST.get("username")
+    email = request.POST.get("emailid")
+    password = request.POST.get("password")
+    fname = request.POST.get("fname")
+    lname = request.POST.get("lname")
+    address = request.POST.get("address")
+    phone = request.POST.get("phone")
+    #print ".........address........",address
+    if request.method == 'GET':
+        form = UserRegistrationForm() #object creation
+    else:
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+              user = User.objects.create_user(username, email, password)
+              user.first_name = fname
+              user.last_name = lname
+              user.save()
+              a = UserProfile(user_id=user.id,address=address,phone=phone)
+              a.save()
+              return redirect('questions:index')
+    return render(request, 'registration.html', {'form': form,})

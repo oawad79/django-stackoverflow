@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 # Create your models here.
@@ -32,6 +33,11 @@ class QuestionAnswer(models.Model):
     def __str__(self):
         return self.answer_text
 
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User)
+    address = models.CharField(max_length=100)
+    phone = models.IntegerField(max_length=10)
 
 
 

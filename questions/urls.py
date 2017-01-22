@@ -15,4 +15,5 @@ urlpatterns = [
     url(r'^vote_question/(?P<question_id>[0-9]+)/$', views.vote_question, name='vote_question'),
     url(r'^vote_answer/(?P<question_id>[0-9]+)/$', views.vote_answer, name='vote_answer'),
     url(r'^change/password/$',views.change_password, name='changepassword'),
+    url(r'^users/add$', views.add_user, name='add_user')
 ]
